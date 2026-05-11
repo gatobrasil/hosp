@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vozia Care Libras Hospitalar</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#eef6ff;color:#123;text-align:center}
+header{background:#005baa;color:white;padding:18px}
+h1{margin:0;font-size:24px}
+.container{padding:14px}
+.hidden{display:none}
+button,.card,.frase-botao{font-size:18px;padding:15px;margin:6px;border:0;border-radius:16px;background:#005baa;color:white;cursor:pointer}
+.big-choice{display:block;width:92%;max-width:600px;margin:18px auto;padding:28px;font-size:28px;font-weight:bold}
+.pacienteBtn{background:#0077ff}
+.medicoBtn{background:#14a44d}
+.frase-area{background:white;margin:14px auto;padding:18px;max-width:850px;border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,.16)}
+.frase-botao{display:block;width:94%;max-width:800px;margin:12px auto;background:#14a44d;font-size:28px;font-weight:bold;line-height:1.35;min-height:80px;transition:.3s}
+textarea{width:92%;max-width:850px;height:85px;font-size:21px;padding:12px;border-radius:15px;border:2px solid #005baa}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin-top:10px}
+.card{background:white;color:#123;box-shadow:0 4px 10px rgba(0,0,0,.15);font-weight:bold;min-height:90px}
+.icon{display:block;font-size:36px;margin-bottom:8px}
+.section-title{background:#d9ecff;padding:12px;border-radius:14px;margin-top:18px;font-size:21px;font-weight:bold}
+.emergency{background:#d90429;color:white}
+.ok{background:#14a44d}
+.limpar{background:#555}
+.voltar{background:#222}
+.historico{background:white;text-align:left;margin:16px auto;padding:14px;max-width:850px;border-radius:16px;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.historico h3{text-align:center;margin-top:0}
+.item{padding:8px;border-bottom:1px solid #ddd;font-size:16px}
+.pacienteLabel{color:#005baa;font-weight:bold}
+.medicoLabel{color:#14a44d;font-weight:bold}
+.aviso{font-size:14px;opacity:.75}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Vozia Care Libras Hospitalar</h1>
+  <p>Comunicação acessível para atendimento de pacientes surdos</p>
+</header>
+
+<div class="container">
+
+  <!-- TELA INICIAL -->
+  <div id="telaInicial">
+    <h2>Quem está usando?</h2>
+    <button class="big-choice pacienteBtn" onclick="abrirModulo('paciente')">👤 Sou paciente</button>
+    <button class="big-choice medicoBtn" onclick="abrirModulo('medico')">🩺 Sou médico / profissional de saúde</button>
+  </div>
+
+  <!-- ÁREA PRINCIPAL -->
+  <div id="app" class="hidden">
+
+    <button class="voltar" onclick="voltarInicio()">⬅️ Trocar usuário</button>
+
+    <div class="frase-area">
+      <div>Frase atual:</div>
+      <button id="botaoFrase" class="frase-botao" onclick="acionarVLibrasNesteBotao()">Selecione uma opção</button>
+      <p class="aviso" id="avisoModo">Escolha uma frase.</p>
+    </div>
+
+    <textarea id="texto" placeholder="Digite uma frase..."></textarea><br>
+
+    <button class="ok" onclick="usarTexto()">✅ OK / Usar frase</button>
+    <button class="limpar" onclick="limpar()">🧹 Limpar</button>
+
+    <!-- PACIENTE -->
+    <div id="paciente" class="hidden">
+
+      <div class="section-title">🚨 Emergência</div>
+      <div class="grid">
+        <div class="card emergency" onclick="pacienteFala('Preciso de ajuda agora')"><span class="icon">🚨</span>Ajuda agora</div>
+        <div class="card emergency" onclick="pacienteFala('Não consigo respirar')"><span class="icon">🫁</span>Não consigo respirar</div>
+        <div class="card emergency" onclick="pacienteFala('Estou piorando')"><span class="icon">⚠️</span>Estou piorando</div>
+      </div>
+
+      <div class="section-title">😖 Dor</div>
+      <div class="grid">
+        <div class="card" onclick="pacienteFala('Estou com dor')"><span class="icon">😖</span>Estou com dor</div>
+        <div class="card" onclick="pacienteFala('Dor no peito')"><span class="icon">❤️</span>Dor no peito</div>
+        <div class="card" onclick="pacienteFala('Dor na barriga')"><span class="icon">🤢</span>Dor na barriga</div>
+        <div class="card" onclick="pacienteFala('Dor de cabeça')"><span class="icon">🤕</span>Dor de cabeça</div>
+        <div class="card" onclick="pacienteFala('Dor forte')"><span class="icon">🔥</span>Dor forte</div>
+        <div class="card" onclick="pacienteFala('Dor fraca')"><span class="icon">⚠️</span>Dor fraca</div>
+      </div>
+
+      <div class="section-title">🚻 Necessidades</div>
+      <div class="grid">
+        <div class="card" onclick="pacienteFala('Quero água')"><span class="icon">💧</span>Quero água</div>
+        <div class="card" onclick="pacienteFala('Quero comer')"><span class="icon">🍽️</span>Quero comer</div>
+        <div class="card" onclick="pacienteFala('Preciso ir ao banheiro')"><span class="icon">🚻</span>Banheiro</div>
+        <div class="card" onclick="pacienteFala('Estou com frio')"><span class="icon">🥶</span>Frio</div>
+        <div class="card" onclick="pacienteFala('Estou com calor')"><span class="icon">🥵</span>Calor</div>
+        <div class="card" onclick="pacienteFala('Preciso mudar de posição')"><span class="icon">🛏️</span>Mudar posição</div>
+      </div>
+
+      <div class="section-title">🙂 Respostas rápidas</div>
+      <div class="grid">
+        <div class="card" onclick="pacienteFala('Sim')"><span class="icon">👍</span>Sim</div>
+        <div class="card" onclick="pacienteFala('Não')"><span class="icon">👎</span>Não</div>
+        <div class="card" onclick="pacienteFala('Não entendi')"><span class="icon">❓</span>Não entendi</div>
+        <div class="card" onclick="pacienteFala('Obrigado')"><span class="icon">🙏</span>Obrigado</div>
+      </div>
+
+    </div>
+
+    <!-- MÉDICO -->
+    <div id="medico" class="hidden">
+
+      <div class="section-title">🩺 Identificação</div>
+      <div class="grid">
+        <div class="card" onclick="medicoPergunta('Qual é o seu nome?')"><span class="icon">👤</span>Nome?</div>
+        <div class="card" onclick="medicoPergunta('Qual é a sua idade?')"><span class="icon">🎂</span>Idade?</div>
+        <div class="card" onclick="medicoPergunta('O que você está sentindo?')"><span class="icon">📝</span>Queixa?</div>
+        <div class="card" onclick="medicoPergunta('Quando começou?')"><span class="icon">⏰</span>Quando começou?</div>
+      </div>
+
+      <div class="section-title">😖 Dor</div>
+      <div class="grid">
+        <div class="card" onclick="medicoPergunta('Onde está doendo?')"><span class="icon">📍</span>Onde dói?</div>
+        <div class="card" onclick="medicoPergunta('A dor começou de repente?')"><span class="icon">⚡</span>Começou de repente?</div>
+        <div class="card" onclick="medicoPergunta('De zero a dez, qual a intensidade da dor?')"><span class="icon">🔢</span>Dor 0 a 10?</div>
+        <div class="card" onclick="medicoPergunta('A dor vai para outro lugar?')"><span class="icon">➡️</span>Irradia?</div>
+        <div class="card" onclick="medicoPergunta('A dor piora ao respirar?')"><span class="icon">🫁</span>Piora ao respirar?</div>
+        <div class="card" onclick="medicoPergunta('Você já teve essa dor antes?')"><span class="icon">🔁</span>Já teve antes?</div>
+      </div>
+
+      <div class="section-title">🫁 Respiração e coração</div>
+      <div class="grid">
+        <div class="card" onclick="medicoPergunta('Você está com falta de ar?')"><span class="icon">🫁</span>Falta de ar?</div>
+        <div class="card" onclick="medicoPergunta('Você sente dor no peito?')"><span class="icon">❤️</span>Dor no peito?</div>
+        <div class="card" onclick="medicoPergunta('Você está com palpitação?')"><span class="icon">💓</span>Palpitação?</div>
+        <div class="card" onclick="medicoPergunta('Você desmaiou?')"><span class="icon">😵</span>Desmaiou?</div>
+        <div class="card" onclick="medicoPergunta('Você está tossindo?')"><span class="icon">😷</span>Tosse?</div>
+        <div class="card" onclick="medicoPergunta('Saiu sangue ao tossir?')"><span class="icon">🩸</span>Sangue na tosse?</div>
+      </div>
+
+      <div class="section-title">🤢 Sintomas associados</div>
+      <div class="grid">
+        <div class="card" onclick="medicoPergunta('Você está com náusea ou enjoo?')"><span class="icon">🤢</span>Enjoo?</div>
+        <div class="card" onclick="medicoPergunta('Você vomitou?')"><span class="icon">🤮</span>Vômito?</div>
+        <div class="card" onclick="medicoPergunta('Você teve febre?')"><span class="icon">🌡️</span>Febre?</div>
+        <div class="card" onclick="medicoPergunta('Você está com tontura?')"><span class="icon">😵‍💫</span>Tontura?</div>
+        <div class="card" onclick="medicoPergunta('Você está com dor de cabeça?')"><span class="icon">🤕</span>Cefaleia?</div>
+        <div class="card" onclick="medicoPergunta('Você perdeu força em algum lado do corpo?')"><span class="icon">🧠</span>Perdeu força?</div>
+      </div>
+
+      <div class="section-title">💊 Antecedentes</div>
+      <div class="grid">
+        <div class="card" onclick="medicoPergunta('Você tem alergia?')"><span class="icon">⚠️</span>Alergia?</div>
+        <div class="card" onclick="medicoPergunta('Você usa algum remédio todos os dias?')"><span class="icon">💊</span>Usa remédio?</div>
+        <div class="card" onclick="medicoPergunta('Você tem pressão alta?')"><span class="icon">🩺</span>Pressão alta?</div>
+        <div class="card" onclick="medicoPergunta('Você tem diabetes?')"><span class="icon">🩸</span>Diabetes?</div>
+        <div class="card" onclick="medicoPergunta('Você tem problema no coração?')"><span class="icon">❤️</span>Coração?</div>
+        <div class="card" onclick="medicoPergunta('Você já fez cirurgia?')"><span class="icon">🏥</span>Cirurgia?</div>
+      </div>
+
+      <div class="section-title">✅ Exame físico</div>
+      <div class="grid">
+        <div class="card" onclick="medicoPergunta('Respire fundo')"><span class="icon">🫁</span>Respire fundo</div>
+        <div class="card" onclick="medicoPergunta('Abra a boca')"><span class="icon">👄</span>Abra a boca</div>
+        <div class="card" onclick="medicoPergunta('Aperte minha mão')"><span class="icon">✋</span>Aperte a mão</div>
+        <div class="card" onclick="medicoPergunta('Levante o braço')"><span class="icon">💪</span>Levante braço</div>
+        <div class="card" onclick="medicoPergunta('Mostre onde está doendo')"><span class="icon">👉</span>Mostre a dor</div>
+        <div class="card" onclick="medicoPergunta('Fique calmo, vamos ajudar você')"><span class="icon">🤝</span>Fique calmo</div>
+      </div>
+
+    </div>
+
+    <div class="historico">
+      <h3>📋 Histórico da comunicação</h3>
+      <div id="historicoLista"></div>
+      <button class="limpar" onclick="limparHistorico()">Apagar histórico</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- VLibras -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+<script>
+new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+let modoAtual = "";
+
+function abrirModulo(modo){
+  modoAtual = modo;
+  document.getElementById("telaInicial").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  document.getElementById("paciente").classList.add("hidden");
+  document.getElementById("medico").classList.add("hidden");
+  document.getElementById(modo).classList.remove("hidden");
+
+  if(modo === "paciente"){
+    atualizarBotaoFrase("Modo paciente ativado. Clique ou escreva para falar.");
+    document.getElementById("avisoModo").innerText = "Paciente: clique ou digite para sair som.";
+    falar("Modo paciente ativado");
+  } else {
+    atualizarBotaoFrase("Modo médico ativado. Clique em uma pergunta ou escreva uma frase.");
+    document.getElementById("avisoModo").innerText = "Médico: a frase vira botão verde para o VLibras.";
+    setTimeout(acionarVLibrasNesteBotao, 400);
+  }
+}
+
+function voltarInicio(){
+  speechSynthesis.cancel();
+  modoAtual = "";
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("telaInicial").classList.remove("hidden");
+}
+
+function falar(texto){
+  const fala = new SpeechSynthesisUtterance(texto);
+  fala.lang = "pt-BR";
+  fala.rate = 0.9;
+  fala.pitch = 1;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(fala);
+}
+
+function atualizarBotaoFrase(texto){
+  document.getElementById("botaoFrase").innerText = texto;
+  document.getElementById("texto").value = texto;
+}
+
+function adicionarHistorico(tipo, texto){
+  const lista = document.getElementById("historicoLista");
+  const item = document.createElement("div");
+  item.className = "item";
+  const hora = new Date().toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"});
+  item.innerHTML = `<span class="${tipo === 'Paciente' ? 'pacienteLabel' : 'medicoLabel'}">${tipo}</span> — ${hora}: ${texto}`;
+  lista.prepend(item);
+}
+
+function pacienteFala(texto){
+  modoAtual = "paciente";
+  atualizarBotaoFrase(texto);
+  piscarBotao("#005baa");
+  adicionarHistorico("Paciente", texto);
+  falar(texto);
+}
+
+function medicoPergunta(texto){
+  modoAtual = "medico";
+  speechSynthesis.cancel();
+  atualizarBotaoFrase(texto);
+  adicionarHistorico("Médico", texto);
+  setTimeout(acionarVLibrasNesteBotao, 300);
+}
+
+function usarTexto(){
+  const texto = document.getElementById("texto").value.trim();
+  if(!texto){
+    alert("Digite uma frase primeiro.");
+    return;
+  }
+
+  atualizarBotaoFrase(texto);
+
+  if(modoAtual === "paciente"){
+    piscarBotao("#005baa");
+    adicionarHistorico("Paciente", texto);
+    falar(texto);
+  } else {
+    speechSynthesis.cancel();
+    adicionarHistorico("Médico", texto);
+    setTimeout(acionarVLibrasNesteBotao, 300);
+  }
+}
+
+function piscarBotao(cor){
+  const botaoFrase = document.getElementById("botaoFrase");
+  botaoFrase.style.background = cor;
+  botaoFrase.style.transform = "scale(1.04)";
+  botaoFrase.style.boxShadow = "0 0 25px " + cor;
+
+  if(navigator.vibrate){ navigator.vibrate(150); }
+
+  setTimeout(() => {
+    botaoFrase.style.background = "#14a44d";
+    botaoFrase.style.transform = "scale(1)";
+    botaoFrase.style.boxShadow = "none";
+  }, 1500);
+}
+
+function acionarVLibrasNesteBotao(){
+  const botaoFrase = document.getElementById("botaoFrase");
+
+  botaoFrase.style.background = "#00c853";
+  botaoFrase.style.transform = "scale(1.04)";
+  botaoFrase.style.boxShadow = "0 0 25px #00c853";
+
+  if(navigator.vibrate){ navigator.vibrate(200); }
+
+  botaoFrase.focus();
+
+  const range = document.createRange();
+  range.selectNodeContents(botaoFrase);
+
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  const touchEvent = new Event("mouseup", { bubbles:true });
+  botaoFrase.dispatchEvent(touchEvent);
+
+  const botaoVLibras = document.querySelector("[vw-access-button]");
+  if(botaoVLibras){ botaoVLibras.click(); }
+
+  setTimeout(() => {
+    botaoFrase.style.background = "#14a44d";
+    botaoFrase.style.transform = "scale(1)";
+    botaoFrase.style.boxShadow = "none";
+  }, 1800);
+}
+
+function limpar(){
+  document.getElementById("texto").value = "";
+  document.getElementById("botaoFrase").innerText = "Selecione uma opção";
+  speechSynthesis.cancel();
+  window.getSelection().removeAllRanges();
+}
+
+function limparHistorico(){
+  document.getElementById("historicoLista").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
